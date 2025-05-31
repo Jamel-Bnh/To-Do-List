@@ -1,16 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    tasks = storedTasks; // Load tasks from localStorage only once on page load
+    tasks = []; // Always start with an empty list
     updateTasksList();
     updateStats();
 });
+let tasks = []; // Initialize tasks array
 
-let tasks = [];
-
-const saveTasks = () => {
-    // Disabled saving to localStorage
-    // localStorage.setItem("tasks", JSON.stringify(tasks));
-};
 
 const addTask = () => {
     const taskInput = document.getElementById("taskInput");
@@ -20,8 +14,8 @@ const addTask = () => {
         tasks.push({ text: text, completed: false });
         updateTasksList();
         updateStats();
-        // saveTasks(); // Disabled saving
-        taskInput.value = ""; // Clear the input field
+
+        taskInput.value = "";
     }
 };
 
@@ -29,21 +23,18 @@ const toggleTaskComplete = (index) => {
     tasks[index].completed = !tasks[index].completed;
     updateTasksList();
     updateStats();
-    // saveTasks(); // Disabled saving
 };
 
 const deleteTask = (index) => {
     tasks.splice(index, 1);
     updateTasksList();
     updateStats();
-    // saveTasks(); // Disabled saving
 };
 
 const editTask = (index) => {
     const taskInput = document.getElementById("taskInput");
     taskInput.value = tasks[index].text;
     deleteTask(index);
-    // saveTasks(); // No need, already commented in deleteTask
 };
 
 const updateStats = () => {
@@ -63,7 +54,7 @@ const updateTasksList = () => {
     const taskList = document.getElementById("taskList");
     if (!taskList) return;
 
-    taskList.innerHTML = ""; // Clear the task list
+    taskList.innerHTML = ""; 
 
     tasks.forEach((task, index) => {
         const listItem = document.createElement("div");
@@ -72,7 +63,7 @@ const updateTasksList = () => {
             <div class="taskItem">
                 <div class="task ${task.completed ? "completed" : ""}">
                     <input type="checkbox" class="checkbox" ${task.completed ? "checked" : ""}/>
-                    <p>${task.text}</p>
+                    <p style="max-width: 87%; padding-right: 7%;">${task.text}</p>
                 </div>
                 <div class="icons">
                     <img src="./img/edit.png" onclick="editTask(${index})"/>
@@ -86,7 +77,6 @@ const updateTasksList = () => {
     });
 };
 
-// Prevent form refresh and add task
 document.getElementById("taskForm").addEventListener("submit", function (e) {
     e.preventDefault();
     addTask();
