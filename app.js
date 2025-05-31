@@ -1,14 +1,8 @@
-document.addEventListener("DOMContentLoaded", () => {
-    tasks = []; // Always start with an empty list
-    updateTasksList();
-    updateStats();
-});
-let tasks = []; // Initialize tasks array
-
+let tasks = [];
 
 const addTask = () => {
     const taskInput = document.getElementById("taskInput");
-    const text = taskInput.value.trim();
+    const text = taskInput.value.trim(); 
 
     if (text) {
         tasks.push({ text: text, completed: false });
@@ -38,17 +32,19 @@ const editTask = (index) => {
 };
 
 const updateStats = () => {
-    const totalTasks = tasks.length;
-    const completedTasks = tasks.filter((task) => task.completed).length;
-    const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+    let completed = 0;
+    const total = tasks.length;
 
-    document.getElementById("progress").style.width = `${progress}%`;
-    document.getElementById("numbers").innerHTML = `${completedTasks} / ${totalTasks}`;
+    for (let i = 0; i < total; i++) completed += tasks[i].completed ? 1 : 0;
 
-    if (totalTasks > 0 && completedTasks === totalTasks) {
-        blastConfetti();
-    }
+    const progress = total ? (completed / total) * 100 : 0;
+
+    document.getElementById("progress")?.style.setProperty("width", `${progress}%`);
+    document.getElementById("numbers")?.textContent = `${completed} / ${total}`;
+
+    if (total && completed === total) blastConfetti();
 };
+
 
 const updateTasksList = () => {
     const taskList = document.getElementById("task-list");
