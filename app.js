@@ -1,8 +1,13 @@
-let tasks = [];
+document.addEventListener("DOMContentLoaded", () => {
+    tasks = [];
+    updateTasksList();
+    updateStats();
+});
+let tasks = []; 
 
 const addTask = () => {
     const taskInput = document.getElementById("taskInput");
-    const text = taskInput.value.trim(); 
+    const text = taskInput.value.trim();
 
     if (text) {
         tasks.push({ text: text, completed: false });
@@ -19,38 +24,36 @@ const toggleTaskComplete = (index) => {
     updateStats();
 };
 
-const deleteTask = (index) => {
+function deleteTask(index) {
     tasks.splice(index, 1);
     updateTasksList();
     updateStats();
-};
+}
 
-const editTask = (index) => {
+function editTask(index) {
     const taskInput = document.getElementById("taskInput");
     taskInput.value = tasks[index].text;
     deleteTask(index);
-};
+}
 
 const updateStats = () => {
-    let completed = 0;
-    const total = tasks.length;
+    const totalTasks = tasks.length;
+    const completedTasks = tasks.filter((task) => task.completed).length;
+    const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
 
-    for (let i = 0; i < total; i++) completed += tasks[i].completed ? 1 : 0;
+    document.getElementById("progress").style.width = `${progress}%`;
+    document.getElementById("numbers").innerHTML = `${completedTasks} / ${totalTasks}`;
 
-    const progress = total ? (completed / total) * 100 : 0;
-
-    document.getElementById("progress")?.style.setProperty("width", `${progress}%`);
-    document.getElementById("numbers")?.textContent = `${completed} / ${total}`;
-
-    if (total && completed === total) blastConfetti();
+    if (totalTasks > 0 && completedTasks === totalTasks) {
+        blastConfetti();
+    }
 };
-
 
 const updateTasksList = () => {
     const taskList = document.getElementById("task-list");
     if (!taskList) return;
 
-    taskList.innerHTML = ""; 
+    taskList.innerHTML = "";
 
     tasks.forEach((task, index) => {
         const listItem = document.createElement("div");
@@ -77,6 +80,7 @@ document.getElementById("taskForm").addEventListener("submit", function (e) {
 });
 
 const blastConfetti = () => {
+    if (typeof confetti !== "function") return;
     const count = 200, defaults = { origin: { y: 0.7 } };
 
     function fire(particleRatio, opts) {
@@ -89,3 +93,6 @@ const blastConfetti = () => {
     fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
     fire(0.1, { spread: 120, startVelocity: 45 });
 };
+
+window.editTask = editTask;
+window.deleteTask = deleteTask;
