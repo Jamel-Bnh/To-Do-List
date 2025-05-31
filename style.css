@@ -38,9 +38,9 @@ body {
 
 .details {
   width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 #progress {
@@ -102,17 +102,6 @@ button {
   outline: none;
 }
 
-.taskItem {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: var(--secondaryBackground);
-  padding: 10px;
-  border-radius: 10px;
-  width: 100%;
-  gap:280px;
-}
-
 #task-list {
   margin-top: 30px;
   display: flex;
@@ -123,10 +112,38 @@ button {
   align-items: center;
 }
 
+.taskItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--secondaryBackground);
+  padding: 10px 20px;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 25px;
+}
+
+.taskText {
+  flex: 1;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  padding-right: 20px;
+}
+
+
+.icons {
+  display: flex;
+  gap: 15px;
+  min-width: 60px;
+  justify-content: flex-end;
+}
+
+
 .taskItem img {
   width: 24px;
   height: 24px;
-  margin: 0 10px;
+  margin: 0 5px;
   cursor: pointer;
 }
 

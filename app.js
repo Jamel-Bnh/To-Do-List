@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    tasks = storedTasks; // Ensure tasks are restored
+    tasks = storedTasks; // Load tasks from localStorage only once on page load
     updateTasksList();
     updateStats();
 });
@@ -8,7 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
 let tasks = [];
 
 const saveTasks = () => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+    // Disabled saving to localStorage
+    // localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
 const addTask = () => {
@@ -19,7 +20,7 @@ const addTask = () => {
         tasks.push({ text: text, completed: false });
         updateTasksList();
         updateStats();
-        saveTasks();
+        // saveTasks(); // Disabled saving
         taskInput.value = ""; // Clear the input field
     }
 };
@@ -28,20 +29,21 @@ const toggleTaskComplete = (index) => {
     tasks[index].completed = !tasks[index].completed;
     updateTasksList();
     updateStats();
-    saveTasks();
+    // saveTasks(); // Disabled saving
 };
 
 const deleteTask = (index) => {
     tasks.splice(index, 1);
     updateTasksList();
     updateStats();
-    saveTasks();
+    // saveTasks(); // Disabled saving
 };
 
 const editTask = (index) => {
     const taskInput = document.getElementById("taskInput");
     taskInput.value = tasks[index].text;
-    deleteTask(index); // Remove the task to be edited
+    deleteTask(index);
+    // saveTasks(); // No need, already commented in deleteTask
 };
 
 const updateStats = () => {
@@ -64,7 +66,7 @@ const updateTasksList = () => {
     taskList.innerHTML = ""; // Clear the task list
 
     tasks.forEach((task, index) => {
-        const listItem = document.createElement("li");
+        const listItem = document.createElement("div");
 
         listItem.innerHTML = `
             <div class="taskItem">
@@ -84,7 +86,7 @@ const updateTasksList = () => {
     });
 };
 
-// Handle form submission to prevent page refresh
+// Prevent form refresh and add task
 document.getElementById("taskForm").addEventListener("submit", function (e) {
     e.preventDefault();
     addTask();
